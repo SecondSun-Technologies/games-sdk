@@ -6,7 +6,7 @@ Games are unprivileged, stateless React modules. They emit facts, not decisions.
 
 [![CI](https://github.com/SecondSun-Technologies/games-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/SecondSun-Technologies/games-sdk/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3+-blue.svg)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ---
 
