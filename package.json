@@ -1,6 +1,6 @@
 {
   "name": "@secondsuntech/games-sdk",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Game platform SDK for SecondSun - games are unprivileged, stateless React modules",
   "type": "module",
   "main": "./dist/index.js",
