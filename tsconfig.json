@@ -1,0 +1,89 @@
+{
+    "compilerOptions": {
+        // ═══════════════════════════════════════════════════════════════════════
+        // STRICT MODE - These are non-negotiable constraints, not preferences
+        // ═══════════════════════════════════════════════════════════════════════
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        // ═══════════════════════════════════════════════════════════════════════
+        // EXTRA STRICT - Because strict: true isn't strict enough
+        // ═══════════════════════════════════════════════════════════════════════
+        // Prevents "undefined roulette" when indexing arrays/objects
+        // arr[0] returns T | undefined, not T
+        "noUncheckedIndexedAccess": true,
+        // Stops silent shape mismatches with optional properties
+        // { x?: string } is different from { x: string | undefined }
+        "exactOptionalPropertyTypes": true,
+        // Forces real error handling - catch variables are unknown, not any
+        "useUnknownInCatchVariables": true,
+        // Catches accidental method shadowing in subclasses
+        "noImplicitOverride": true,
+        // Prevents fallthrough bugs in switch statements
+        "noFallthroughCasesInSwitch": true,
+        // Forces explicit bracket notation for index signatures
+        // obj.foo errors if foo could be from index signature
+        "noPropertyAccessFromIndexSignature": true,
+        // ═══════════════════════════════════════════════════════════════════════
+        // ADDITIONAL SAFETY
+        // ═══════════════════════════════════════════════════════════════════════
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        // ═══════════════════════════════════════════════════════════════════════
+        // MODULE & OUTPUT CONFIGURATION
+        // ═══════════════════════════════════════════════════════════════════════
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "verbatimModuleSyntax": true,
+        // ═══════════════════════════════════════════════════════════════════════
+        // DECLARATION & OUTPUT
+        // ═══════════════════════════════════════════════════════════════════════
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        // ═══════════════════════════════════════════════════════════════════════
+        // JSX FOR REACT
+        // ═══════════════════════════════════════════════════════════════════════
+        "jsx": "react-jsx",
+        // ═══════════════════════════════════════════════════════════════════════
+        // PATH ALIASES
+        // ═══════════════════════════════════════════════════════════════════════
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
+        // ═══════════════════════════════════════════════════════════════════════
+        // LIBRARY
+        // ═══════════════════════════════════════════════════════════════════════
+        "lib": [
+            "ES2022",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "skipLibCheck": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "**/*.test.ts",
+        "**/*.test.tsx"
+    ]
+}
