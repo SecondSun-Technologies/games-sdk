@@ -436,7 +436,7 @@ npm run dev         # Start dev server
 
 ## 📄 License
 
-MIT © [SecondSun Technologies](https://secondsuntech.com)
+Apache 2.0 © [SecondSun Technologies LLC](https://secondsuntech.com)
 
 ---
 
