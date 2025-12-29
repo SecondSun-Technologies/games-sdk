@@ -31,15 +31,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Build games-sdk first (simulator depends on its type declarations)
+      # Build both packages (games-sdk first as simulator depends on it)
       - name: Build games-sdk
         run: npm run build -w @secondsuntech/games-sdk
 
+      - name: Build simulator
+        run: npm run build -w @secondsuntech/games-sdk-simulator
+
+      # TypeScript typecheck both packages
       - name: TypeScript type check (all workspaces)
         run: npm run typecheck
 
+      # ESLint both packages
       - name: ESLint (all workspaces)
         run: npm run lint
 
-      - name: Build simulator
-        run: npm run build -w @secondsuntech/games-sdk-simulator
+      # Run tests for both packages
+      - name: Run tests (all workspaces)
+        run: npm run test
+

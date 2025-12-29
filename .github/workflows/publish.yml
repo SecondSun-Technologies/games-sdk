@@ -31,14 +31,17 @@ jobs:
       - name: Build games-sdk
         run: npm run build -w @secondsuntech/games-sdk
 
+      - name: Build simulator
+        run: npm run build -w @secondsuntech/games-sdk-simulator
+
       - name: TypeScript type check
         run: npm run typecheck
 
       - name: ESLint
         run: npm run lint
 
-      - name: Build simulator
-        run: npm run build -w @secondsuntech/games-sdk-simulator
+      - name: Run tests
+        run: npm run test
 
   # Only publish after all CI jobs pass
   publish:
