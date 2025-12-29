@@ -1,6 +1,6 @@
 {
   "name": "@secondsuntech/games-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Game platform SDK for SecondSun - games are unprivileged, stateless React modules",
   "type": "module",
   "main": "./dist/index.js",
@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
-    "@types/react-native": "^0.72.8",
+    "@types/react-native": "^0.73.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "esbuild": "^0.27.2",
