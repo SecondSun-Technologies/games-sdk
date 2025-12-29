@@ -59,8 +59,9 @@ npm install react@^18.0.0
 
 ```typescript
 import { createGame, type GameRenderProps } from '@secondsuntech/games-sdk';
+import { View, Text, Stack, Button } from '@secondsuntech/games-sdk/ui';
 
-// Your game component
+// Your game component (SDK primitives only—no divs, no buttons)
 function MyGame({ context, emit }: GameRenderProps) {
   const handleCorrect = () => {
     emit({
@@ -71,10 +72,10 @@ function MyGame({ context, emit }: GameRenderProps) {
   };
 
   return (
-    <div>
-      <h1>My Cognitive Game</h1>
-      <button onClick={handleCorrect}>Correct!</button>
-    </div>
+    <Stack direction="vertical" spacing="md" padding="lg">
+      <Text size="heading">My Cognitive Game</Text>
+      <Button onPress={handleCorrect}>Correct!</Button>
+    </Stack>
   );
 }
 
@@ -85,7 +86,7 @@ export const game = createGame({
     name: 'My Cognitive Game',
     version: '1.0.0',
     categories: ['memory', 'focus'],
-    recommendedSessionDurationMs: 300000, // 5 minutes
+    recommendedSessionDurationMs: 300000,
     capabilities: ['audio', 'haptics'],
     stateSchemaVersion: 1,
   },
@@ -146,6 +147,44 @@ emit({
   schemaVersion: 1,
 });
 ```
+
+---
+
+## 🎨 UI Primitives
+
+Games render ONLY using SDK primitives. No HTML tags. No divs. No spans.
+
+### Available Components
+
+```typescript
+import { View, Text, Stack, Spacer, Button, ScrollView } from '@secondsuntech/games-sdk/ui';
+
+// Layout
+<View padding="md" background="surface" radius="lg">
+  <Stack direction="vertical" spacing="sm">
+    <Text size="heading">Title</Text>
+    <Text color="textSecondary">Subtitle</Text>
+  </Stack>
+</View>
+
+// Buttons
+<Button onPress={handleClick} variant="primary">Play</Button>
+<Button onPress={handleDelete} variant="danger">Delete</Button>
+
+// Computed positioning (games compute, SDK applies)
+<View x={computedX} y={computedY} scale={animatedScale}>
+  <Text>Positioned element</Text>
+</View>
+```
+
+### Rules
+
+| Rule | Description |
+|------|-------------|
+| **Stateless** | Primitives don't manage game state |
+| **Semantic Props** | `padding="md"` not `style={{ padding: 12 }}` |
+| **No Escape Hatches** | No arbitrary styles, no classNames |
+| **Auto Accessibility** | Font scaling, hit targets, motion handled automatically |
 
 ---
 

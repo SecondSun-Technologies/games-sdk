@@ -145,7 +145,10 @@ export class BrandedTypeError extends Error {
         const ErrorWithCapture = Error as typeof Error & {
             captureStackTrace?: (target: object, constructor: new (...args: unknown[]) => unknown) => void;
         };
-        ErrorWithCapture.captureStackTrace?.(this, this.constructor as new (...args: unknown[]) => unknown);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- V8-only API, check needed at runtime
+        if (ErrorWithCapture.captureStackTrace !== undefined) {
+            ErrorWithCapture.captureStackTrace(this, this.constructor as new (...args: unknown[]) => unknown);
+        }
     }
 }
 

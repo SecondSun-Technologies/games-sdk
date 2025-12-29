@@ -91,8 +91,36 @@ const MAX_EVENT_SIZE = 64 * 1024;
 
 /**
  * CLAMPING POLICY:
- * - Analytics fields (accuracy, successRate, userSignal.value) → CLAMP to valid range
- * - Structural fields (IDs, types, counts) → REJECT if invalid
+ *
+ * ┌─────────────────────┬──────────┬─────────────────────────────────────────────┐
+ * │ Field Type          │ Behavior │ Rationale                                   │
+ * ├─────────────────────┼──────────┼─────────────────────────────────────────────┤
+ * │ accuracy [0,1]      │ CLAMP    │ Minor float artifacts shouldn't reject      │
+ * │ successRate [0,1]   │ CLAMP    │ Minor float artifacts shouldn't reject      │
+ * │ value [0,1]         │ CLAMP    │ User signal intensity, same reason          │
+ * ├─────────────────────┼──────────┼─────────────────────────────────────────────┤
+ * │ errorCount ≥0       │ CLAMP    │ Non-fatal, clamp is safe                    │
+ * │ hintsUsed ≥0        │ CLAMP    │ Non-fatal, clamp is safe                    │
+ * │ streakLength ≥0     │ CLAMP    │ Non-fatal, clamp is safe                    │
+ * │ reactionTimeMs ≥0   │ CLAMP    │ Negative time is clearly wrong              │
+ * ├─────────────────────┼──────────┼─────────────────────────────────────────────┤
+ * │ sessionId           │ REJECT   │ Breaks referential integrity                │
+ * │ levelId             │ REJECT   │ Breaks referential integrity                │
+ * │ checkpointId        │ REJECT   │ Breaks referential integrity                │
+ * ├─────────────────────┼──────────┼─────────────────────────────────────────────┤
+ * │ type                │ REJECT   │ Indicates game logic bug                    │
+ * │ reason              │ REJECT   │ Indicates game logic bug                    │
+ * │ errorType           │ REJECT   │ Indicates game logic bug                    │
+ * │ failureType         │ REJECT   │ Indicates game logic bug                    │
+ * ├─────────────────────┼──────────┼─────────────────────────────────────────────┤
+ * │ difficulty [1,10]   │ REJECT   │ Structural, not analytics                   │
+ * │ attemptNumber ≥1    │ REJECT   │ Structural, not analytics                   │
+ * │ durationMs ≥0       │ REJECT   │ Structural timing field                     │
+ * └─────────────────────┴──────────┴─────────────────────────────────────────────┘
+ *
+ * DEV vs PROD BEHAVIOR:
+ * - DEV:  console.warn on clamp, console.error + reject on invalid
+ * - PROD: Silent clamp, silent drop on invalid
  *
  * Why clamp analytics:
  * - Minor floating-point artifacts (1.0000001) shouldn't reject events
@@ -104,6 +132,7 @@ const MAX_EVENT_SIZE = 64 * 1024;
  * - Invalid types indicate game logic bugs
  * - Counts being wrong suggests deeper problems
  */
+
 
 /**
  * Clamps a value to a range [min, max].

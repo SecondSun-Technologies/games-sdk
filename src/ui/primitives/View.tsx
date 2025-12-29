@@ -1,0 +1,199 @@
+/**
+ * @fileoverview View Primitive
+ * @module @secondsuntech/games-sdk/ui/primitives/View
+ *
+ * ══════════════════════════════════════════════════════════════════════════════
+ * VIEW PRIMITIVE
+ *
+ * The base layout container. Replaces <div>.
+ *
+ * RULES:
+ * - Stateless. No internal state beyond trivial focus.
+ * - Semantic props only. No style objects, no classNames.
+ * - Games compute position values (x, y, scale), View applies them.
+ * ══════════════════════════════════════════════════════════════════════════════
+ */
+
+import { forwardRef, type ReactNode, type CSSProperties } from 'react';
+import { useTheme } from '../../theme/context.js';
+import type { SpacingToken, ColorToken, RadiusToken } from '../../theme/tokens.js';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PROPS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * View component props.
+ * All props are semantic. No arbitrary styles allowed.
+ */
+export interface ViewProps {
+    /** Child elements */
+    readonly children?: ReactNode;
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Semantic layout props (from theme tokens)
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    /** Padding (all sides) using spacing token */
+    readonly padding?: SpacingToken;
+    /** Horizontal padding using spacing token */
+    readonly paddingX?: SpacingToken;
+    /** Vertical padding using spacing token */
+    readonly paddingY?: SpacingToken;
+    /** Margin (all sides) using spacing token */
+    readonly margin?: SpacingToken;
+    /** Background color using color token */
+    readonly background?: ColorToken;
+    /** Border radius using radius token */
+    readonly radius?: RadiusToken;
+    /** Flex grow value */
+    readonly flex?: number;
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Computed positioning (from game logic)
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Games compute these values using their own logic/libraries.
+    // The SDK applies them. It doesn't care how they were calculated.
+
+    /** X position offset (computed by game) */
+    readonly x?: number;
+    /** Y position offset (computed by game) */
+    readonly y?: number;
+    /** Scale factor (computed by game) */
+    readonly scale?: number;
+    /** Opacity 0-1 (computed by game) */
+    readonly opacity?: number;
+    /** Rotation in degrees (computed by game) */
+    readonly rotation?: number;
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Accessibility
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    /** Accessible label for screen readers */
+    readonly accessibilityLabel?: string;
+    /** Accessibility role */
+    readonly accessibilityRole?: 'none' | 'group' | 'region' | 'list' | 'listitem';
+    /** Test ID for testing */
+    readonly testID?: string;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// COMPONENT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * View - Base layout container primitive.
+ *
+ * This is a stateless render component. All game state lives in game code.
+ *
+ * @example
+ * ```tsx
+ * // Semantic styling via tokens
+ * <View padding="md" background="surface" radius="md">
+ *   <Text>Content</Text>
+ * </View>
+ *
+ * // Computed positioning from game logic
+ * <View x={computedX} y={computedY} scale={scale}>
+ *   <Text>Positioned</Text>
+ * </View>
+ * ```
+ */
+export const View = forwardRef<HTMLDivElement, ViewProps>(function View(
+    {
+        children,
+        padding,
+        paddingX,
+        paddingY,
+        margin,
+        background,
+        radius,
+        flex,
+        x,
+        y,
+        scale,
+        opacity,
+        rotation,
+        accessibilityLabel,
+        accessibilityRole = 'none',
+        testID,
+    },
+    ref
+) {
+    const theme = useTheme();
+
+    // Build transform string from computed values
+    const transforms: string[] = [];
+    if (x !== undefined || y !== undefined) {
+        transforms.push(`translate(${String(x ?? 0)}px, ${String(y ?? 0)}px)`);
+    }
+    if (scale !== undefined) {
+        transforms.push(`scale(${String(scale)})`);
+    }
+    if (rotation !== undefined) {
+        transforms.push(`rotate(${String(rotation)}deg)`);
+    }
+
+    // Compute styles from semantic props
+    const style: CSSProperties = {
+        // Box model
+        boxSizing: 'border-box',
+
+        // Spacing
+        ...(padding !== undefined && {
+            padding: theme.spacing(padding),
+        }),
+        ...(paddingX !== undefined && {
+            paddingLeft: theme.spacing(paddingX),
+            paddingRight: theme.spacing(paddingX),
+        }),
+        ...(paddingY !== undefined && {
+            paddingTop: theme.spacing(paddingY),
+            paddingBottom: theme.spacing(paddingY),
+        }),
+        ...(margin !== undefined && {
+            margin: theme.spacing(margin),
+        }),
+
+        // Visual
+        ...(background !== undefined && {
+            backgroundColor: theme.color(background),
+        }),
+        ...(radius !== undefined && {
+            borderRadius: theme.radius(radius),
+        }),
+
+        // Flex
+        ...(flex !== undefined && {
+            flex,
+        }),
+
+        // Computed transforms
+        ...(transforms.length > 0 && {
+            transform: transforms.join(' '),
+        }),
+
+        // Opacity
+        ...(opacity !== undefined && {
+            opacity,
+        }),
+    };
+
+    // Map role to ARIA role
+    const ariaRole = accessibilityRole === 'none' ? undefined : accessibilityRole;
+
+    return (
+        <div
+            ref={ref}
+            style={style}
+            role={ariaRole}
+            aria-label={accessibilityLabel}
+            data-testid={testID}
+        >
+            {children}
+        </div>
+    );
+});
+
+View.displayName = 'View';
