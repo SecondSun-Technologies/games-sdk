@@ -24,10 +24,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
+      # Upgrade npm to 11.3.0+ which fixes optional dependencies bug
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - name: Install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install
+        run: npm ci
 
       # Build games-sdk first (simulator depends on its type declarations)
       - name: Build games-sdk
@@ -41,4 +43,3 @@ jobs:
 
       - name: Build simulator
         run: npm run build -w @secondsuntech/games-sdk-simulator
-
