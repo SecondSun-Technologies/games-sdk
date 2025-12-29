@@ -6,7 +6,43 @@ on:
       - 'v*'  # Trigger on version tags like v0.1.1, v1.0.0, etc.
 
 jobs:
+  # First run CI on all Node versions
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x, 24.x, 25.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build games-sdk
+        run: npm run build -w @secondsuntech/games-sdk
+
+      - name: TypeScript type check
+        run: npm run typecheck
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Build simulator
+        run: npm run build -w @secondsuntech/games-sdk-simulator
+
+  # Only publish after all CI jobs pass
   publish:
+    needs: ci
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -23,20 +59,18 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
 
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: npm ci
 
-      - name: TypeScript type check
-        run: npm run typecheck
-
-      - name: ESLint
-        run: npm run lint
-
       - name: Build
-        run: npm run build
+        run: npm run build -w @secondsuntech/games-sdk
 
       - name: Publish games-sdk to npm
         working-directory: packages/games-sdk
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
