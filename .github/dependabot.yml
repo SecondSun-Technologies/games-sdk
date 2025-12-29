@@ -1,0 +1,22 @@
+# Dependabot configuration for monorepo
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Root package.json
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Games SDK package
+  - package-ecosystem: "npm"
+    directory: "/packages/games-sdk"
+    schedule:
+      interval: "weekly"
+
+  # Simulator package
+  - package-ecosystem: "npm"
+    directory: "/packages/games-sdk-simulator"
+    schedule:
+      interval: "weekly"

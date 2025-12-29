@@ -1,0 +1,30 @@
+{
+    "name": "@secondsuntech/games-sdk-simulator",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Device simulator for testing SecondSun games",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint src/",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@secondsuntech/games-sdk": "file:../games-sdk",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "@typescript-eslint/eslint-plugin": "^8.0.0",
+        "@typescript-eslint/parser": "^8.0.0",
+        "@vitejs/plugin-react": "^4.2.0",
+        "eslint": "^9.0.0",
+        "typescript": "^5.3.0",
+        "typescript-eslint": "^8.50.1",
+        "vite": "^5.0.0"
+    }
+}

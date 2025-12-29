@@ -1,93 +1,17 @@
 {
-  "name": "@secondsuntech/games-sdk",
-  "version": "1.0.0",
-  "description": "Game platform SDK for SecondSun - games are unprivileged, stateless React modules",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "react-native": "./dist/index.native.js",
-  "exports": {
-    ".": {
-      "react-native": "./dist/index.native.js",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+    "name": "games-sdk-monorepo",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "typecheck": "npm -ws run typecheck --if-present",
+        "build": "npm -ws run build --if-present",
+        "lint": "npm -ws run lint --if-present",
+        "test": "npm -ws run test --if-present",
+        "clean": "npm -ws run clean --if-present"
     },
-    "./dev": {
-      "import": "./dist/dev/index.js",
-      "types": "./dist/dev/index.d.ts"
-    },
-    "./ui": {
-      "react-native": "./dist/ui/index.native.js",
-      "import": "./dist/ui/index.js",
-      "types": "./dist/ui/index.d.ts"
-    },
-    "./theme": {
-      "import": "./dist/theme/index.js",
-      "types": "./dist/theme/index.d.ts"
-    },
-    "./platform": {
-      "react-native": "./dist/platform/index.native.js",
-      "import": "./dist/platform/index.js",
-      "types": "./dist/platform/index.d.ts"
+    "engines": {
+        "node": ">=18.0.0"
     }
-  },
-  "files": [
-    "dist",
-    "README.md"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "dev": "vite",
-    "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build"
-  },
-  "peerDependencies": {
-    "react": "^18.0.0",
-    "react-native": ">=0.70.0"
-  },
-  "peerDependenciesMeta": {
-    "react-native": {
-      "optional": true
-    }
-  },
-  "devDependencies": {
-    "@types/react": "^19.2.7",
-    "@types/react-native": "^0.72.8",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
-    "esbuild": "^0.27.2",
-    "eslint": "^9.0.0",
-    "eslint-plugin-react": "^7.37.5",
-    "react": "^19.2.3",
-    "typescript": "^5.3.0",
-    "typescript-eslint": "^8.50.1",
-    "vite": "^7.3.0",
-    "vitest": "^4.0.16"
-  },
-  "keywords": [
-    "games",
-    "sdk",
-    "react",
-    "cognitive",
-    "mental-health",
-    "secondsun"
-  ],
-  "author": "SecondSun Technologies",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/SecondSun-Technologies/games-sdk.git"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  }
 }
