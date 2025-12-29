@@ -27,11 +27,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Build games-sdk first (simulator depends on its type declarations)
+      - name: Build games-sdk
+        run: npm run build -w @secondsuntech/games-sdk
+
       - name: TypeScript type check (all workspaces)
         run: npm run typecheck
 
       - name: ESLint (all workspaces)
         run: npm run lint
 
-      - name: Build (all workspaces)
-        run: npm run build
+      - name: Build simulator
+        run: npm run build -w @secondsuntech/games-sdk-simulator
+

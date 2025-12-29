@@ -12,9 +12,9 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@secondsuntech/games-sdk": "file:../games-sdk",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "@secondsuntech/games-sdk": "*",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3"
     },
     "devDependencies": {
         "@types/react": "^18.2.0",
